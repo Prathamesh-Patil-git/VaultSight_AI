@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  embedding-service:
+    build: 
+      context: ./python-embedding
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_NAME=all-MiniLM-L6-v2
+      - PORT=8000
+    volumes:
+      - ~/.cache/torch:/root/.cache/torch
+
+  backend:
+    build:
+      context: ./vaultsight-backend
+    ports:
+      - "5001:5001"
+    environment:
+      - PORT=5001
+      - MONGODB_URI=mongodb://mongodb:27017/vaultsight_db
+      - EMBEDDING_SERVICE_URL=http://embedding-service:8000
+      - FRONTEND_URL=http://localhost:5173
+      - JWT_SECRET=HkeCIA7xus5NHh78RWLBchIAM0rvjKno6cvYXLg9pFUQsLUU4kkvFy61eg3gDwLfjfsFbtOHy8p0lzb3SoqIqi
+      - JWT_EXPIRES_IN=24h
+      - NODE_ENV=production
+    depends_on:
+      - mongodb
+      - embedding-service
+
+volumes:
+  mongodb_data:
