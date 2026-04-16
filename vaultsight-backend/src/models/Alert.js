@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 
 const alertSchema = new mongoose.Schema({
   alertId: { type: String, required: true, unique: true },
-  type: { 
-    type: String, 
+  type: {
+    type: String,
     enum: ['ACCOUNT_LOCKED', 'FRAUD_DETECTED', 'SUSPICIOUS_LOGIN', 'HIGH_RISK_TRANSACTION', 'BRUTE_FORCE', 'AUTO_LOCK', 'MANUAL_LOCK'],
-    required: true 
+    required: true
   },
 
   severity: { type: String, enum: ['INFO', 'WARNING', 'HIGH', 'CRITICAL'], required: true },

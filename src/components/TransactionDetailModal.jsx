@@ -10,12 +10,12 @@ const TransactionDetailModal = ({ transaction, onClose }) => {
   const handleExecuteProtocol = async () => {
     // Check both userId (Transaction model) and affectedUserId (Threat model) for compatibility
     const targetUserId = transaction.userId || transaction.affectedUserId;
-    
+
     if (!targetUserId) {
-        alert('Origin signature missing: Account trace failed');
-        return;
+      alert('Origin signature missing: Account trace failed');
+      return;
     }
-    
+
     setIsExecuting(true);
     try {
       await api.post(`/admin/lock/${targetUserId}`, {
@@ -35,14 +35,14 @@ const TransactionDetailModal = ({ transaction, onClose }) => {
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
       {/* Backdrop */}
-      <div 
+      <div
         className="absolute inset-0 bg-navy-950/80 backdrop-blur-md"
         onClick={onClose}
       ></div>
-      
+
       {/* Modal Container */}
       <div className="relative bg-navy-900 w-full max-w-2xl rounded-[3rem] border border-navy-700 shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
-        
+
         {/* Header Section */}
         <div className="p-8 bg-navy-800/50 border-b border-navy-700 flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -54,7 +54,7 @@ const TransactionDetailModal = ({ transaction, onClose }) => {
               <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Index: {transaction.transactionId}</p>
             </div>
           </div>
-          <button 
+          <button
             onClick={onClose}
             className="p-3 bg-navy-900 text-slate-400 hover:text-white rounded-2xl border border-navy-700 transition-colors"
           >
@@ -64,7 +64,7 @@ const TransactionDetailModal = ({ transaction, onClose }) => {
 
         {/* Content Body */}
         <div className="p-10 space-y-10 max-h-[70vh] overflow-y-auto no-scrollbar">
-          
+
           {/* Risk Summary Bar */}
           <div className="grid grid-cols-3 gap-6">
             <div className="bg-navy-950 p-6 rounded-[2rem] border border-navy-800 text-center space-y-2">
@@ -74,14 +74,13 @@ const TransactionDetailModal = ({ transaction, onClose }) => {
             <div className="bg-navy-950 p-6 rounded-[2rem] border border-navy-800 text-center space-y-2 col-span-2">
               <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest text-left px-2">Decision Logic</p>
               <div className="flex items-center gap-3 px-2">
-                <div className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest ${
-                   transaction.riskLevel === 'HIGH' ? 'bg-danger/10 text-danger' : 
-                   transaction.riskLevel === 'MEDIUM' ? 'bg-warning/10 text-warning' : 'bg-success/10 text-success'
-                }`}>
+                <div className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest ${transaction.riskLevel === 'HIGH' ? 'bg-danger/10 text-danger' :
+                    transaction.riskLevel === 'MEDIUM' ? 'bg-warning/10 text-warning' : 'bg-success/10 text-success'
+                  }`}>
                   Level: {transaction.riskLevel}
                 </div>
                 <div className="flex-1 h-2 bg-navy-800 rounded-full overflow-hidden">
-                   <div className={`h-full transition-all duration-1000 ${transaction.riskScore > 70 ? 'bg-danger' : 'bg-warning'}`} style={{ width: `${transaction.riskScore}%` }}></div>
+                  <div className={`h-full transition-all duration-1000 ${transaction.riskScore > 70 ? 'bg-danger' : 'bg-warning'}`} style={{ width: `${transaction.riskScore}%` }}></div>
                 </div>
               </div>
             </div>
@@ -91,19 +90,19 @@ const TransactionDetailModal = ({ transaction, onClose }) => {
           <div className="space-y-6">
             <h3 className="text-xs font-black text-slate-500 uppercase tracking-[0.3em] italic border-l-4 border-electric pl-4">Involved Vectors</h3>
             <div className="flex items-center gap-6">
-               <div className="flex-1 bg-navy-950 p-6 rounded-[2rem] border border-navy-800 relative group">
-                  <div className="absolute top-4 right-6 opacity-10 group-hover:opacity-20 transition-opacity"><User size={40} /></div>
-                  <p className="text-[9px] font-bold text-slate-500 uppercase mb-2">Origin</p>
-                  <p className="text-sm font-black text-white italic truncate">{transaction.senderUpiId || 'Internal Node'}</p>
-               </div>
-               <div className="bg-navy-800 p-4 rounded-full border border-navy-700">
-                  <ArrowRight size={20} className="text-electric" />
-               </div>
-               <div className="flex-1 bg-navy-950 p-6 rounded-[2rem] border border-navy-800 relative group">
-                  <div className="absolute top-4 right-6 opacity-10 group-hover:opacity-20 transition-opacity"><User size={40} /></div>
-                  <p className="text-[9px] font-bold text-slate-500 uppercase mb-2">Destination</p>
-                  <p className="text-sm font-black text-white italic truncate">{transaction.receiverUpiId}</p>
-               </div>
+              <div className="flex-1 bg-navy-950 p-6 rounded-[2rem] border border-navy-800 relative group">
+                <div className="absolute top-4 right-6 opacity-10 group-hover:opacity-20 transition-opacity"><User size={40} /></div>
+                <p className="text-[9px] font-bold text-slate-500 uppercase mb-2">Origin</p>
+                <p className="text-sm font-black text-white italic truncate">{transaction.senderUpiId || 'Internal Node'}</p>
+              </div>
+              <div className="bg-navy-800 p-4 rounded-full border border-navy-700">
+                <ArrowRight size={20} className="text-electric" />
+              </div>
+              <div className="flex-1 bg-navy-950 p-6 rounded-[2rem] border border-navy-800 relative group">
+                <div className="absolute top-4 right-6 opacity-10 group-hover:opacity-20 transition-opacity"><User size={40} /></div>
+                <p className="text-[9px] font-bold text-slate-500 uppercase mb-2">Destination</p>
+                <p className="text-sm font-black text-white italic truncate">{transaction.receiverUpiId}</p>
+              </div>
             </div>
           </div>
 
@@ -113,15 +112,15 @@ const TransactionDetailModal = ({ transaction, onClose }) => {
               <h3 className="text-xs font-black text-slate-500 uppercase tracking-[0.3em] italic border-l-4 border-electric pl-4">Network Telemetry</h3>
               <div className="space-y-4">
                 {[
-                  { icon: <MapPin size={14}/>, label: 'Geo Location', value: transaction.location },
-                  { icon: <Smartphone size={14}/>, label: 'Entry Node', value: transaction.device },
-                  { icon: <Activity size={14}/>, label: 'IP Address', value: transaction.ipAddress || '192.168.1.104' },
-                  { icon: <Fingerprint size={14}/>, label: 'Session DNA', value: 'Verified (JWT-2)' },
+                  { icon: <MapPin size={14} />, label: 'Geo Location', value: transaction.location },
+                  { icon: <Smartphone size={14} />, label: 'Entry Node', value: transaction.device },
+                  { icon: <Activity size={14} />, label: 'IP Address', value: transaction.ipAddress || '192.168.1.104' },
+                  { icon: <Fingerprint size={14} />, label: 'Session DNA', value: 'Verified (JWT-2)' },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center justify-between p-4 bg-navy-950/50 rounded-2xl border border-navy-800/50">
                     <div className="flex items-center gap-3">
-                       <div className="text-slate-500">{item.icon}</div>
-                       <span className="text-[10px] font-bold text-slate-500 uppercase">{item.label}</span>
+                      <div className="text-slate-500">{item.icon}</div>
+                      <span className="text-[10px] font-bold text-slate-500 uppercase">{item.label}</span>
                     </div>
                     <span className="text-[10px] font-black text-white italic">{item.value || 'N/A'}</span>
                   </div>
@@ -132,29 +131,29 @@ const TransactionDetailModal = ({ transaction, onClose }) => {
             <div className="space-y-6">
               <h3 className="text-xs font-black text-slate-500 uppercase tracking-[0.3em] italic border-l-4 border-danger pl-4">Neural Flags</h3>
               <div className="flex flex-wrap gap-2">
-                 {transaction.riskFlags && transaction.riskFlags.length > 0 ? transaction.riskFlags.map((flag, i) => (
-                   <div key={i} className="px-4 py-2 bg-danger/5 border border-danger/10 text-danger rounded-xl flex items-center gap-2">
-                      <AlertTriangle size={12} />
-                      <span className="text-[9px] font-black uppercase tracking-widest">{flag}</span>
-                   </div>
-                 )) : (
-                   <div className="px-4 py-2 bg-success/5 border border-success/10 text-success rounded-xl flex items-center gap-2">
-                      <CheckCircle size={12} />
-                      <span className="text-[9px] font-black uppercase tracking-widest">Baseline Normal</span>
-                   </div>
-                 )}
-                 <div className="px-4 py-2 bg-navy-950 border border-navy-800 text-slate-500 rounded-xl flex items-center gap-2">
-                    <Clock size={12} />
-                    <span className="text-[9px] font-black uppercase tracking-widest">T: {new Date(transaction.createdAt).toLocaleTimeString()}</span>
-                 </div>
+                {transaction.riskFlags && transaction.riskFlags.length > 0 ? transaction.riskFlags.map((flag, i) => (
+                  <div key={i} className="px-4 py-2 bg-danger/5 border border-danger/10 text-danger rounded-xl flex items-center gap-2">
+                    <AlertTriangle size={12} />
+                    <span className="text-[9px] font-black uppercase tracking-widest">{flag}</span>
+                  </div>
+                )) : (
+                  <div className="px-4 py-2 bg-success/5 border border-success/10 text-success rounded-xl flex items-center gap-2">
+                    <CheckCircle size={12} />
+                    <span className="text-[9px] font-black uppercase tracking-widest">Baseline Normal</span>
+                  </div>
+                )}
+                <div className="px-4 py-2 bg-navy-950 border border-navy-800 text-slate-500 rounded-xl flex items-center gap-2">
+                  <Clock size={12} />
+                  <span className="text-[9px] font-black uppercase tracking-widest">T: {new Date(transaction.createdAt).toLocaleTimeString()}</span>
+                </div>
               </div>
               <div className="p-6 bg-navy-950 rounded-[2rem] border border-navy-800 mt-4">
-                 <p className="text-[9px] font-bold text-slate-600 uppercase mb-3">Diagnostic Memo</p>
-                 <p className="text-xs text-slate-400 leading-relaxed font-medium italic">
-                    Pattern analysis suggests {transaction.riskScore > 60 ? 'high-confidence signal deviation' : 'nominal variation'}. 
-                    {transaction.amount > 50000 ? ' Large payload detected relative to historical baseline.' : ''} 
-                    Origin node correlates with {transaction.location || 'unmapped coordinate'}.
-                 </p>
+                <p className="text-[9px] font-bold text-slate-600 uppercase mb-3">Diagnostic Memo</p>
+                <p className="text-xs text-slate-400 leading-relaxed font-medium italic">
+                  Pattern analysis suggests {transaction.riskScore > 60 ? 'high-confidence signal deviation' : 'nominal variation'}.
+                  {transaction.amount > 50000 ? ' Large payload detected relative to historical baseline.' : ''}
+                  Origin node correlates with {transaction.location || 'unmapped coordinate'}.
+                </p>
               </div>
             </div>
           </div>
@@ -162,14 +161,14 @@ const TransactionDetailModal = ({ transaction, onClose }) => {
 
         {/* Footer Actions */}
         <div className="p-8 bg-navy-900 border-t border-navy-700 grid grid-cols-2 gap-4">
-          <button 
+          <button
             disabled={isExecuting}
             className="py-4 bg-navy-800 text-slate-400 hover:text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] border border-navy-700 transition-all hover:bg-navy-700 disabled:opacity-50"
             onClick={onClose}
           >
             Sustain Analysis
           </button>
-          <button 
+          <button
             disabled={isExecuting}
             onClick={handleExecuteProtocol}
             className="py-4 bg-electric text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-electric/20 transition-all hover:bg-blue-600 active:scale-95 flex items-center justify-center gap-2 disabled:opacity-50"
