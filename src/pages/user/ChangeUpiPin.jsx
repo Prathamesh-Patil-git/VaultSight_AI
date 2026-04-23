@@ -53,11 +53,11 @@ const ChangeUpiPin = () => {
 
   if (step === 'success') {
     return (
-      <div className="h-[70vh] flex flex-col items-center justify-center p-12 text-center animate-in zoom-in duration-500 bg-white shadow-2xl rounded-lg border border-slate-100 max-w-2xl mx-auto mt-20">
-        <div className="mb-10 p-10 bg-success/10 rounded-lg border-4 border-white shadow-2xl">
-           <CheckCircle2 className="text-success" size={80} />
+      <div className="min-h-[60vh] flex flex-col items-center justify-center p-6 md:p-12 text-center animate-in zoom-in duration-500 bg-white shadow-2xl rounded-lg border border-slate-100 max-w-2xl mx-auto md:mt-20">
+        <div className="mb-8 md:mb-10 p-8 md:p-10 bg-success/10 rounded-lg border-4 border-white shadow-2xl">
+           <CheckCircle2 className="text-success" size={60} className="md:w-20 md:h-20" />
         </div>
-        <h2 className="text-4xl font-black text-navy-900 mb-4 italic uppercase tracking-tighter">PIN Synchronized</h2>
+        <h2 className="text-3xl md:text-4xl font-black text-navy-900 mb-4 italic uppercase tracking-tighter">PIN Synchronized</h2>
         <p className="font-bold text-slate-500 mb-14 max-w-md">
            Your neural access key has been updated successfully.
         </p>
@@ -73,13 +73,13 @@ const ChangeUpiPin = () => {
 
   return (
     <div className="max-w-xl mx-auto py-12 px-6 space-y-12 animate-in slide-in-from-bottom-10 duration-700">
-      <div className="flex items-center gap-6">
-        <button onClick={() => navigate(-1)} className="p-4 bg-white rounded-lg text-navy-900 shadow-sm border border-slate-200 hover:bg-slate-50 transition-all">
-          <ChevronLeft size={24} />
+      <div className="flex items-center gap-4 md:gap-6">
+        <button onClick={() => navigate(-1)} className="p-3 md:p-4 bg-white rounded-lg text-navy-900 shadow-sm border border-slate-200 hover:bg-slate-50 transition-all">
+          <ChevronLeft size={20} className="md:w-6 md:h-6" />
         </button>
         <div>
-          <h1 className="text-3xl font-black text-navy-900 uppercase tracking-tighter italic">Key Rotation</h1>
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mt-1 italic">UPI PIN Internal Management</p>
+          <h1 className="text-2xl md:text-3xl font-black text-navy-900 uppercase tracking-tighter italic">Key Rotation</h1>
+          <p className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mt-1 italic">UPI PIN Internal Management</p>
         </div>
       </div>
 
@@ -140,7 +140,7 @@ const ChangeUpiPin = () => {
           <button 
             disabled={loading || formData.newPin.length < 4}
             type="submit"
-            className="w-full py-6 bg-navy-900 text-white rounded-lg font-black italic text-sm uppercase tracking-widest hover:bg-electric transition-all shadow-2xl shadow-navy-900/20 flex items-center justify-center gap-3 disabled:opacity-50"
+            className="w-full py-4 md:py-6 bg-navy-900 text-white rounded-lg font-black italic text-xs md:text-sm uppercase tracking-widest hover:bg-electric transition-all shadow-2xl shadow-navy-900/20 flex items-center justify-center gap-3 disabled:opacity-50"
           >
             {loading ? <Loader2 className="animate-spin" size={20} /> : <ShieldCheck size={20} />}
             Commit Key Rotation

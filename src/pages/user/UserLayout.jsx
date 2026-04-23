@@ -4,7 +4,7 @@ import { useApp } from '../../context/AppContext';
 import { 
   BarChart3, 
   Send, 
-  History, 
+  History as HistoryIcon, 
   CreditCard, 
   ShieldCheck, 
   LayoutDashboard,
@@ -17,6 +17,8 @@ import {
 const UserLayout = () => {
   const { user, loading } = useApp();
   const location = useLocation();
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+  const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = React.useState(true);
 
   if (loading) return null;
   if (!user && location.pathname !== '/user/login') {
@@ -35,38 +37,69 @@ const UserLayout = () => {
   const navItems = [
     { icon: <LayoutDashboard size={22} />, label: "Command Center", path: "/user/dashboard" },
     { icon: <Send size={22} />, label: "Dispatch Funds", path: "/user/send" },
-    { icon: <History size={22} />, label: "Neural Logs", path: "/user/history" },
+    { icon: <HistoryIcon size={22} />, label: "Neural Logs", path: "/user/history" },
     { icon: <CreditCard size={22} />, label: "Cyber Card", path: "/user/card" },
   ];
 
   return (
-    <div className="flex min-h-screen bg-[#F0F2F5]">
-      {/* Side Navigation - Fixed */}
-      <aside className="w-[280px] bg-white border-r border-slate-200 hidden lg:flex flex-col sticky top-0 h-screen">
-        <div className="p-8">
-           <div className="flex items-center gap-3 mb-10">
-              <div className="bg-navy-900 p-2 rounded-lg shadow-lg">
+    <div className="flex min-h-screen bg-[#F0F2F5] overflow-x-hidden relative">
+      {/* Sidebar Overlay for Mobile */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-navy-900/60 backdrop-blur-sm z-[60] lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      {/* Side Navigation */}
+      <aside className={`
+        fixed lg:sticky top-0 h-screen bg-white border-r border-slate-200 flex flex-col z-[70] transition-all duration-300
+        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        ${isDesktopSidebarOpen ? 'lg:w-[280px]' : 'lg:w-[80px]'}
+        w-[280px]
+      `}>
+        <div className="p-4 lg:p-8 overflow-hidden h-full flex flex-col relative">
+           {/* Mobile Close Button */}
+           <button 
+             onClick={() => setIsSidebarOpen(false)}
+             className="lg:hidden absolute top-4 right-4 p-2.5 bg-slate-50 hover:bg-slate-100 rounded-lg text-slate-400 border border-slate-200 transition-all active:scale-95 z-[80]"
+           >
+              <div className="w-5 h-5 relative">
+                <span className="absolute top-1/2 left-0 w-full h-0.5 bg-current rotate-45 rounded-full"></span>
+                <span className="absolute top-1/2 left-0 w-full h-0.5 bg-current -rotate-45 rounded-full"></span>
+              </div>
+           </button>
+           <div className={`flex items-center gap-3 mb-10 transition-all ${!isDesktopSidebarOpen && 'lg:justify-center lg:gap-0'}`}>
+              <div className="bg-navy-900 p-2 rounded-lg shadow-lg shrink-0">
                  <ShieldCheck size={24} className="text-electric" />
               </div>
-              <div>
-                <h1 className="text-xl font-black tracking-tighter italic text-navy-900">VaultSight <span className="text-electric">AI</span></h1>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Consumer Portal</p>
+              <div className={`transition-opacity duration-300 ${!isDesktopSidebarOpen ? 'lg:hidden' : 'block'}`}>
+                <h1 className="text-xl font-black tracking-tighter italic text-navy-900 whitespace-nowrap">VaultSight <span className="text-electric">AI</span></h1>
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest whitespace-nowrap">Consumer Portal</p>
               </div>
            </div>
 
-           <nav className="space-y-2">
+           <nav className="space-y-2 flex-1">
               {navItems.map((item) => (
                 <NavLink
                   key={item.path}
                   to={item.path}
-                  className={({ isActive }) => `flex items-center gap-4 px-6 py-4 rounded-lg transition-all font-black text-xs uppercase tracking-widest group ${
+                  onClick={() => setIsSidebarOpen(false)}
+                  className={({ isActive }) => `flex items-center gap-4 py-4 rounded-lg transition-all font-black text-xs uppercase tracking-widest group relative ${
+                    isDesktopSidebarOpen ? 'px-6' : 'lg:px-0 lg:justify-center'
+                  } ${
                     isActive ? 'bg-navy-900 text-white shadow-xl shadow-navy-900/10' : 'text-slate-400 hover:bg-slate-50 hover:text-navy-900'
                   }`}
                 >
                   {({ isActive }) => (
                     <>
-                      <span className={`${isActive ? 'text-electric' : 'group-hover:text-electric'} transition-colors`}>{item.icon}</span>
-                      {item.label}
+                      <span className={`${isActive ? 'text-electric' : 'group-hover:text-electric'} transition-colors shrink-0`}>{item.icon}</span>
+                      <span className={`transition-opacity duration-300 ${!isDesktopSidebarOpen ? 'lg:hidden' : 'block'}`}>
+                        {item.label}
+                      </span>
+                      {!isDesktopSidebarOpen && isActive && (
+                        <div className="hidden lg:block absolute left-0 w-1 h-6 bg-electric rounded-r-full" />
+                      )}
                     </>
                   )}
                 </NavLink>
@@ -87,53 +120,78 @@ const UserLayout = () => {
       </aside>
 
       {/* Main Container */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Top Desktop Bar */}
-        <header className="h-20 bg-white border-b border-slate-200 sticky top-0 z-30 px-8 flex items-center justify-between">
-           <div className="relative w-96 group hidden md:block">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-electric transition-colors" size={18} />
-              <input 
-                type="text" 
-                placeholder="Search resources, logs, or transactions..." 
-                className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:ring-4 focus:ring-electric/5 outline-none transition-all"
-              />
+      <div className="flex-1 flex flex-col min-w-0 w-full overflow-x-hidden">
+        {/* Top Header Bar */}
+        <header className="h-16 lg:h-20 bg-white border-b border-slate-200 sticky top-0 z-30 px-4 sm:px-8 flex items-center justify-between transition-all w-full">
+           <div className="flex items-center gap-4">
+              <button 
+                onClick={() => {
+                  if (window.innerWidth < 1024) setIsSidebarOpen(true);
+                  else setIsDesktopSidebarOpen(!isDesktopSidebarOpen);
+                }}
+                className="p-2.5 bg-slate-50 hover:bg-slate-100 rounded-lg text-navy-900 transition-all border border-slate-200 shadow-sm"
+              >
+                 <div className="flex flex-col gap-1 w-5">
+                    <span className={`h-0.5 bg-current rounded-full transition-all ${isDesktopSidebarOpen ? 'w-full' : 'w-3'}`}></span>
+                    <span className="h-0.5 bg-current rounded-full w-full"></span>
+                    <span className={`h-0.5 bg-current rounded-full transition-all ${isDesktopSidebarOpen ? 'w-3' : 'w-full'}`}></span>
+                 </div>
+              </button>
+
+              <div className="lg:hidden flex items-center gap-2">
+                 <ShieldCheck size={20} className="text-electric" />
+                 <span className="text-sm font-black italic tracking-tighter">VaultSight</span>
+              </div>
+
+              <div className="relative w-96 group hidden lg:block">
+                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-electric transition-colors" size={18} />
+                 <input 
+                   type="text" 
+                   placeholder="Search secure environment..." 
+                   className="w-full pl-12 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:ring-4 focus:ring-electric/5 outline-none transition-all"
+                 />
+              </div>
            </div>
 
-           <div className="flex items-center gap-6">
-              <div className="hidden sm:flex flex-col text-right">
-                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Secure Entry Point</p>
-                 <p className="text-sm font-black text-navy-900 truncate max-w-[150px]">{user.name}</p>
+           <div className="flex items-center gap-3 sm:gap-6">
+              <div className="flex items-center gap-3 sm:gap-4 px-2 sm:px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-200">
+                 <div className="flex flex-col text-right hidden xs:flex">
+                    <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Entry Ref</p>
+                    <p className="text-[10px] font-black text-navy-900 truncate max-w-[100px]">{user.name?.split(' ')[0]}</p>
+                 </div>
+                 <div className="w-8 h-8 sm:w-10 sm:h-10 bg-navy-900 rounded-lg flex items-center justify-center font-black text-[10px] sm:text-xs text-electric border-2 border-white shadow-lg shrink-0">
+                    {user.name ? user.name.split(' ').map(n=>n[0]).join('').toUpperCase() : 'VS'}
+                 </div>
               </div>
-              <div className="w-12 h-12 bg-navy-900 rounded-lg flex items-center justify-center font-black text-electric border-2 border-white shadow-xl">
-                 {user.name ? user.name.split(' ').map(n=>n[0]).join('') : ''}
-              </div>
-              <button className="p-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-400 hover:text-navy-900 transition-all">
-                 <Settings size={20} />
+              <button className="hidden sm:flex p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-400 hover:text-navy-900 transition-all">
+                 <Bell size={18} />
               </button>
            </div>
         </header>
 
         {/* Dynamic Content Area */}
-        <main className="flex-1 p-8 lg:p-12">
+        <main className="flex-1 p-4 sm:p-8 lg:p-12">
           <div className="max-w-[1400px] mx-auto">
             <Outlet />
           </div>
         </main>
       </div>
 
-      {/* Mobile Footer Nav - Only visible on small screens */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-6 py-4 flex justify-between items-center z-50 rounded-t-[2.5rem] shadow-[0_-20px_40px_rgba(0,0,0,0.05)]">
+      {/* Mobile Bottom Navigation - Improved Aesthetics & Responsiveness */}
+      <nav className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-3rem)] max-w-md bg-navy-900 text-white p-3 rounded-2xl shadow-2xl flex justify-around items-center z-50 animate-in slide-in-from-bottom-10 duration-700">
          {navItems.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
-              className={({ isActive }) => `flex flex-col items-center gap-1.5 transition-all ${
-                isActive ? 'text-electric scale-110' : 'text-slate-400'
+              className={({ isActive }) => `p-3 rounded-xl transition-all duration-300 ${
+                isActive ? 'bg-electric text-white scale-110 shadow-lg shadow-electric/40' : 'text-slate-400 hover:text-white'
               }`}
             >
               {({ isActive }) => (
-                <div className={`p-2 rounded-lg ${isActive ? 'bg-electric/10' : ''}`}>
+                <div className="relative">
                   {item.icon}
+                  {/* Visual Dot for active state */}
+                  <div className={`absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full border-2 border-navy-900 transition-transform ${isActive ? 'scale-100' : 'scale-0'}`} />
                 </div>
               )}
             </NavLink>

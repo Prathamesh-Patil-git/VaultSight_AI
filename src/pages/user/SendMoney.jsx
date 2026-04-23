@@ -12,7 +12,7 @@ import {
   AlertTriangle,
   Zap,
   Activity,
-  History,
+  History as HistoryIcon,
   Info,
   HelpCircle,
   ShieldCheck,
@@ -165,13 +165,13 @@ const SendMoney = () => {
                             Target Identity Handler
                         </label>
                         <div className="relative group">
-                            <div className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-electric transition-colors">
-                                <Search size={24} />
+                            <div className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-electric transition-colors">
+                                <Search size={20} className="md:w-6 md:h-6" />
                             </div>
                             <input 
                             type="text" 
                             placeholder="Enter UPI ID" 
-                            className="w-full pl-16 pr-8 py-6 bg-slate-50 rounded-lg border-2 border-slate-100 focus:border-electric focus:bg-white focus:ring-8 focus:ring-electric/5 outline-none transition-all font-black italic text-xl text-navy-900 placeholder:text-slate-200"
+                            className="w-full pl-12 md:pl-16 pr-6 md:pr-8 py-4 md:py-6 bg-slate-50 rounded-lg border-2 border-slate-100 focus:border-electric focus:bg-white focus:ring-8 focus:ring-electric/5 outline-none transition-all font-black italic text-base md:text-xl text-navy-900 placeholder:text-slate-200"
                             value={recipient}
                             onChange={(e) => setRecipient(e.target.value)}
                             required
@@ -184,11 +184,11 @@ const SendMoney = () => {
                             Quantum Payload Quantity
                         </label>
                         <div className="relative group">
-                            <span className="absolute left-10 top-1/2 -translate-y-1/2 text-6xl font-black text-electric/40 group-focus-within:text-electric transition-colors italic">₹</span>
+                            <span className="absolute left-6 md:left-10 top-1/2 -translate-y-1/2 text-3xl md:text-6xl font-black text-electric/40 group-focus-within:text-electric transition-colors italic">₹</span>
                             <input 
                             type="number" 
                             placeholder="0.00" 
-                            className="w-full pl-24 pr-8 py-12 bg-slate-50 rounded-lg border-2 border-slate-100 focus:border-electric focus:bg-white focus:ring-8 focus:ring-electric/5 outline-none transition-all font-black text-7xl italic text-navy-900 placeholder:text-slate-100"
+                            className="w-full pl-16 md:pl-24 pr-6 md:pr-8 py-8 md:py-12 bg-slate-50 rounded-lg border-2 border-slate-100 focus:border-electric focus:bg-white focus:ring-8 focus:ring-electric/5 outline-none transition-all font-black text-4xl md:text-7xl italic text-navy-900 placeholder:text-slate-100 placeholder:text-2xl md:placeholder:text-7xl"
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                             required
@@ -208,18 +208,18 @@ const SendMoney = () => {
                         </div>
                     </div>
 
-                    <div className="flex gap-4">
+                    <div className="flex flex-col sm:flex-row gap-4">
                         <button 
                             type="button" 
                             onClick={() => setStep('list')}
-                            className="flex-1 py-6 bg-slate-100 text-slate-400 rounded-lg font-black italic text-sm uppercase tracking-widest hover:bg-slate-200 transition-all"
+                            className="flex-1 py-4 md:py-6 bg-slate-100 text-slate-400 rounded-lg font-black italic text-xs md:text-sm uppercase tracking-widest hover:bg-slate-200 transition-all"
                         >
                             Back
                         </button>
                         <button 
                             disabled={!amount || !recipient}
                             onClick={() => setStep('pin')}
-                            className="flex-[2] py-6 bg-navy-900 text-white rounded-lg font-black italic text-sm uppercase tracking-widest hover:bg-electric transition-all shadow-xl disabled:opacity-30"
+                            className="flex-[2] py-4 md:py-6 bg-navy-900 text-white rounded-lg font-black italic text-xs md:text-sm uppercase tracking-widest hover:bg-electric transition-all shadow-xl disabled:opacity-30"
                         >
                             Proceed to Verify
                         </button>
@@ -318,15 +318,15 @@ const SendMoney = () => {
 
   return (
     <div className="space-y-12 animate-in slide-in-from-right-10 duration-500">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-6">
-          <button onClick={() => navigate(-1)} className="p-4 bg-white rounded-lg text-navy-900 hover:bg-slate-50 active:scale-90 transition-all border border-slate-200 shadow-sm">
-            <ChevronLeft size={24} />
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-8">
+        <div className="flex items-center gap-4 md:gap-6">
+          <button onClick={() => navigate(-1)} className="p-3 md:p-4 bg-white rounded-lg text-navy-900 hover:bg-slate-50 active:scale-90 transition-all border border-slate-200 shadow-sm">
+            <ChevronLeft size={20} className="md:w-6 md:h-6" />
           </button>
           <div className="space-y-1">
-             <h1 className="text-4xl font-black text-navy-900 uppercase tracking-tighter italic">Funds Dispatch</h1>
-             <div className="text-xs font-black text-slate-400 uppercase tracking-widest italic flex items-center gap-2">
-                <div className="w-2 h-2 bg-electric rounded-full"></div>
+             <h1 className="text-2xl md:text-4xl font-black text-navy-900 uppercase tracking-tighter italic leading-tight">Funds Dispatch</h1>
+             <div className="text-[9px] md:text-xs font-black text-slate-400 uppercase tracking-widest italic flex items-center gap-2">
+                <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-electric rounded-full"></div>
                 Initializing Secure Protocol Matrix
              </div>
           </div>
@@ -343,9 +343,9 @@ const SendMoney = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-12 gap-12">
+      <div className="grid grid-cols-12 gap-6 md:gap-12">
         {/* Main Form Area */}
-        <div className="col-span-12 lg:col-span-7 bg-white rounded-lg p-12 border border-slate-200 shadow-sm relative overflow-hidden min-h-[600px]">
+        <div className="col-span-12 lg:col-span-7 bg-white rounded-lg p-6 md:p-12 border border-slate-200 shadow-sm relative overflow-hidden min-h-[500px] md:min-h-[600px]">
            <div className="absolute -top-24 -right-24 w-64 h-64 bg-electric/5 rounded-full blur-[80px]"></div>
            <div className="relative z-10 h-full">
               {renderStep()}
@@ -354,26 +354,26 @@ const SendMoney = () => {
 
         {/* Informational Sidebar Area */}
         <div className="col-span-12 lg:col-span-5 space-y-10">
-           <div className="bg-navy-900 rounded-lg p-10 text-white border border-white/5 relative overflow-hidden group">
+           <div className="bg-navy-900 rounded-lg p-6 md:p-10 text-white border border-white/5 relative overflow-hidden group">
               <div className="absolute top-0 right-0 p-10 text-electric/5 translate-x-1/4 -translate-y-1/4 scale-150 rotate-12 group-hover:rotate-0 transition-transform duration-1000">
-                 <ShieldAlert size={180} />
+                 <ShieldAlert size={140} className="md:w-[180px] md:h-[180px]" />
               </div>
-              <div className="relative z-10 space-y-8">
+              <div className="relative z-10 space-y-6 md:space-y-8">
                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-electric/20 rounded-lg border border-electric/20">
-                       <Activity size={24} className="text-electric" />
+                    <div className="p-2 md:p-3 bg-electric/20 rounded-lg border border-electric/20">
+                       <Activity size={20} className="md:w-6 md:h-6 text-electric" />
                     </div>
-                    <h5 className="text-xs font-black uppercase tracking-[0.4em] italic shadow-lg shadow-black">Security Protocol 2.4</h5>
+                    <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.2em] md:tracking-[0.4em] italic shadow-lg shadow-black">Security Protocol 2.4</h5>
                  </div>
-                 <div className="space-y-6">
-                    <p className="text-sm font-medium text-slate-400 leading-relaxed italic border-l-2 border-electric pl-6">
+                 <div className="space-y-4 md:space-y-6">
+                    <p className="text-xs md:text-sm font-medium text-slate-400 leading-relaxed italic border-l-2 border-electric pl-4 md:pl-6">
                        Every transaction is verified using high-dimensional vector embeddings. 
-                       Autonomous locking will initialize if the payload deviates from your historical behavior matrix.
+                       Autonomous locking will initialize if the payload deviates from your behavior matrix.
                     </p>
-                    <div className="bg-white/5 rounded-lg p-6 border border-white/10 flex items-center justify-between">
+                    <div className="bg-white/5 rounded-lg p-4 md:p-6 border border-white/10 flex items-center justify-between">
                        <div className="space-y-1">
-                          <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Risk Level</p>
-                          <p className="text-sm font-black text-success uppercase italic">Negligible</p>
+                          <p className="text-[9px] md:text-[10px] font-black text-slate-500 uppercase tracking-widest">Risk Level</p>
+                          <p className="text-xs md:text-sm font-black text-success uppercase italic">Negligible</p>
                        </div>
                        <div className="flex items-center gap-1">
                           <div className="w-1.5 h-1.5 bg-success rounded-full"></div>
@@ -385,19 +385,19 @@ const SendMoney = () => {
               </div>
            </div>
 
-           <div className="bg-white rounded-lg border border-slate-200 p-10 shadow-sm space-y-8">
-              <h5 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] italic text-center">Protocol Reminders</h5>
-              <div className="space-y-6">
+           <div className="bg-white rounded-lg border border-slate-200 p-6 md:p-10 shadow-sm space-y-6 md:space-y-8">
+              <h5 className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] italic text-center">Protocol Reminders</h5>
+              <div className="space-y-5 md:space-y-6">
                  {[
-                   { icon: <History size={20}/>, title: "Traceability", text: "All transfers generate immutable ledger entries within your neural history." },
-                   { icon: <CheckCircle2 size={20}/>, title: "UPI PIN", text: "Verified 6-digit PIN required for all outbound dispatches." },
-                   { icon: <Users size={20}/>, title: "Directory", text: "Select from authorized recipients to bypass neural verification points." },
+                   { icon: <HistoryIcon size={18} className="md:w-5 md:h-5"/>, title: "Traceability", text: "All transfers generate immutable ledger entries within your neural history." },
+                   { icon: <CheckCircle2 size={18} className="md:w-5 md:h-5"/>, title: "UPI PIN", text: "Verified 6-digit PIN required for all outbound dispatches." },
+                   { icon: <Users size={18} className="md:w-5 md:h-5"/>, title: "Directory", text: "Select from authorized recipients to bypass neural verification points." },
                  ].map((item, i) => (
-                   <div key={i} className="flex gap-5">
-                      <div className="p-3 bg-slate-50 rounded-lg text-electric h-fit shadow-sm">{item.icon}</div>
+                   <div key={i} className="flex gap-4 md:gap-5">
+                      <div className="p-2.5 md:p-3 bg-slate-50 rounded-lg text-electric h-fit shadow-sm">{item.icon}</div>
                       <div className="space-y-1">
-                         <h6 className="text-[11px] font-black text-navy-900 uppercase tracking-widest">{item.title}</h6>
-                         <p className="text-[10px] font-bold text-slate-500 leading-relaxed">{item.text}</p>
+                         <h6 className="text-[10px] md:text-[11px] font-black text-navy-900 uppercase tracking-widest">{item.title}</h6>
+                         <p className="text-[9px] md:text-[10px] font-bold text-slate-500 leading-relaxed">{item.text}</p>
                       </div>
                    </div>
                  ))}
